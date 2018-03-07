@@ -34,13 +34,13 @@ void main(){
   vec3 ambient = Ka * ambientColor;
 
   vec3 lightDirection = normalize(lightPos - worldPosition);
-  vec3 worldNormal = normalize(mat3(modelview) * normal);
+  vec3 worldNormal = normalize(mat3(normalMat) * normal); // normalMat and modelView works here
   float lambert = max(0.0, dot(lightDirection, worldNormal));
   vec3 diffuse = Kd * diffuseColor * lambert;
 
   vec3 reflection = -normalize(reflect(lightDirection, worldNormal));
   vec3 viewDirection = normalize(eyePos - worldPosition);
-  float	specular = Ks * pow(max(0.0, dot(reflection, viewDirection)), shininessVal);
+  vec3	specular = Ks * specularColor * pow(max(0.0, dot(reflection, viewDirection)), shininessVal);
 
   color = vec4(ambient + diffuse + specular, 1.0);
 }

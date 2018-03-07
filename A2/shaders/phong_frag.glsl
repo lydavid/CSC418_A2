@@ -22,13 +22,17 @@ void main() {
   // Your solution should go here.
   // Only the ambient colour calculations have been provided as an example.
 
-  //vec3 hVect = (viewVec + lightPos) / length(viewVec + lightPos);//sqrt(pow(viewVec, 2) + pow(lightPos, 2))
-  vec3 lightDirection = normalize(lightPos - viewVec); // s
+  vec3 lightDirection = normalize(lightPos - vertPos); // s
   vec3 worldNormal = normalize(normalInterp); // n
+
   float lambert = max(0.0, dot(lightDirection, worldNormal));
+
   vec3 diffuse = Kd * diffuseColor * lambert;
 
-  gl_FragColor = vec4(Ka * ambientColor + diffuse, 1.0);
-  //gl_FragColor = vec4(diffuseColor * (ambientColor + specularColor * dot(normalInterp, lightPos)) + (diffuseColor * Kd + specularColor * Ks) * specularColor * dot(hVect, normalInterp), 1);
+  vec3 reflection = normalize(reflect(-lightDirection, worldNormal));
+  vec3 viewDirection = normalize(-vertPos);
+  vec3 specular = Ks * specularColor * pow(max(0.0, dot(reflection, viewDirection)), shininessVal);
+
+  gl_FragColor = vec4(Ka * ambientColor + diffuse + specular, 1.0);
 
 }
