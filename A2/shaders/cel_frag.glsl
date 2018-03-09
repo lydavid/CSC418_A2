@@ -24,7 +24,7 @@ void main() {
 
   
 
-  vec3 lightDirection = normalize(lightPos - vertPos); // s
+  /*vec3 lightDirection = normalize(lightPos - vertPos); // s
   vec3 worldNormal = normalize(normalInterp); // n
 
   float lambert = max(0.0, dot(lightDirection, worldNormal));
@@ -46,13 +46,40 @@ void main() {
   	diffuse = 0.6;
   } else {
   	diffuse = 1.0;
-  }
+  }*/
 
 	//float ambientIntensity = ceil(Ka * 3.0) / 3.0;
   //float diffuseIntensity = ceil(diffuse * 3.0) / 3.0;
   //float specularIntensity = ceil(specular * 3.0) / 3.0;
 
-  gl_FragColor = vec4(diffuse * diffuseColor, 1.0);
+  //gl_FragColor = vec4(diffuse * diffuseColor, 1.0);
   //gl_FragColor = vec4(ambientColor, 1.0);
+
+  vec3 lightDirection = normalize(lightPos - vertPos);
+  vec3 worldNormal = normalize(normalInterp);
+
+  float lambert = max(0.0, dot(lightDirection, worldNormal));
+
+  if (lambert < 0.0) {
+    lambert = 0.0;
+  }
+
+  if (lambert > 0.75) {
+    lambert = 1.0;
+  } else if (lambert > 0.5) {
+    lambert = 0.75;
+  } else if (lambert > 0.25) {
+    lambert = 0.5;
+  } else {
+    lambert = 0.25;
+  }
+
+  vec3 diffuse = Kd * diffuseColor * lambert;
+
+  vec3 reflection = normalize(reflect(-lightDirection, worldNormal));
+  vec3 viewDirection = normalize(-vertPos);
+  vec3 specular = Ks * specularColor * pow(max(0.0, dot(reflection, viewDirection)), shininessVal);
+
+  gl_FragColor = vec4(Ka * ambientColor + diffuse + specular, 1.0);
 
 }
