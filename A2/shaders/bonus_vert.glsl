@@ -18,4 +18,9 @@ void main(){
   // Your solution should go here.
   vec4 vertPos4 = modelview * vec4(position, 1.0);
   gl_Position = projection * vertPos4;
+
+  normalInterp = vec3(normalMat * vec4(normal, 0.0));
+  vertPos = vec3(vertPos4) / vertPos4.w;
+  viewVec = vec3(eyePos - vertPos);
+  
 }
