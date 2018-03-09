@@ -22,5 +22,21 @@ void main() {
   // Your solution should go here.
   
   // The model is currently rendered in black
-  gl_FragColor = vec4(vec3(0.0), 1.0);
+  //gl_FragColor = vec4(vec3(0.0), 1.0);
+
+  vec3 lightDirection = normalize(lightPos - vertPos); // s
+  vec3 worldNormal = normalize(normalInterp); // n
+
+  float opacity = abs(dot(normalize(normalInterp), normalize(-vertPos)));
+  opacity = 1.0 - pow(opacity, shininessVal); 
+
+  float lambert = max(0.0, dot(lightDirection, worldNormal));
+
+  vec3 diffuse = Kd * diffuseColor * lambert;
+
+  //vec3 reflection = normalize(reflect(-lightDirection, worldNormal));
+  //vec3 viewDirection = normalize(-vertPos);
+  //vec3 specular = Ks * specularColor * pow(max(0.0, dot(reflection, viewDirection)), shininessVal);
+
+  gl_FragColor = vec4((Ka * ambientColor + diffuse )* opacity, 1.0);
 }
