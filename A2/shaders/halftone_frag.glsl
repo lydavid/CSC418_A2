@@ -27,10 +27,15 @@ void main() {
 
   vec3 lightDirection = normalize(lightPos - vertPos);
   vec3 worldNormal = normalize(normalInterp);
-
   float lambert = max(0.0, dot(lightDirection, worldNormal));
-
   vec3 diffuse = Kd * diffuseColor * lambert;
 
-  gl_FragColor = vec4(Ka * ambientColor + diffuse, 1.0);
+  vec3 ambient = Ka * ambientColor;
+
+  float frequency = 50.0; // number of dots
+  vec2 nearest = 2.0 * fract(frequency * vec2(vertPos.x, vertPos.y)) - 1.0;
+  float dist = length(nearest);
+  float radius = (1.0 - lambert) * 2.0; // size of dots, by basing it off our lambert, we can get a varied size based on where light hits our model
+
+  gl_FragColor = vec4(mix(ambient, diffuse, step(radius, dist)), 1.0);
 }
