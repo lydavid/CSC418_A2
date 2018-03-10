@@ -35,6 +35,7 @@ void main() {
   float roughness = 1.0;
   float freshnel = 1.9;
   float pi = 3.141592653589793238;
+  float refractiveIndex = 2.2;
 
   vec3 lightDirection = normalize(lightPos - vertPos); // s
   vec3 worldNormal = normalize(normalInterp); // n
@@ -42,26 +43,24 @@ void main() {
   vec3 diffuse = Kd * diffuseColor * lambert;
 
   vec3 reflection = normalize(reflect(-lightDirection, worldNormal));
-  vec3 viewDirection = normalize(viewVec);//(-vertPos);
+  vec3 viewDirection = normalize(viewVec);
 
   vec3 halfVector = normalize(lightDirection + viewDirection);
 
-  
-
-  //vec3 specular = Ks * specularColor * pow(max(0.0, dot(reflection, viewDirection)), shininessVal);
-  // change 1.0 to FGD
   float hDotN = max(0.0, dot(halfVector, worldNormal));
   float vDotN = max(0.0, dot(viewDirection, worldNormal));
   float vDotH = max(0.0, dot(viewDirection, halfVector));
   float lDotN = max(0.0, dot(lightDirection, worldNormal));
+  float lDotH = max(0.0, dot(lightDirection, halfVector));
 
-  float F = pow(1.0 - vDotN, freshnel);
+  float f_0 = pow((1.0 - refractiveIndex) / (1.0 + refractiveIndex), 2.0);
+  float F = f_0 + (1.0 - f_0) * pow((1.0 - lDotH), 5.0);
 
   float G = min(1.0, min(((2.0 * hDotN * vDotN) / vDotH), ((2.0 * hDotN * lDotN) / vDotH)));
 
   float D = pow(exp(-tan(acos(hDotN) / roughness)), 2.0) / (4.0 * pow(roughness, 2.0) * pow(acos(hDotN), 4.0));
 
-  vec3 specular = specularColor * (Ks / pi) * ((F * G * D) / (vDotN * lDotN));
+  vec3 specular = specularColor * (Ks / pi) * max(((F * G * D) / (vDotN * lDotN)), 0.0);
 
   gl_FragColor = vec4(Ka * ambientColor + diffuse + specular, 1.0);
 }

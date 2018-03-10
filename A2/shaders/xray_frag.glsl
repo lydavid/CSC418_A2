@@ -30,5 +30,5 @@ void main() {
 
   vec3 diffuse = Kd * diffuseColor;
 
-  gl_FragColor = vec4((Ka * ambientColor + diffuse ) * opacity, 1.0);
+  gl_FragColor = vec4(diffuse * opacity, 1.0);
 }

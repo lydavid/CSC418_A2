@@ -28,7 +28,7 @@ void main() {
   vec3 diffuse = Kd * diffuseColor * lambert;
 
   vec3 reflection = normalize(reflect(-lightDirection, worldNormal));
-  vec3 viewDirection = normalize(viewVec);//(-vertPos);
+  vec3 viewDirection = normalize(viewVec);
 
   //vec3 halfVector = normalize()
 

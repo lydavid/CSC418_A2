@@ -44,7 +44,7 @@ void main() {
   vec3 diffuse = Kd * diffuseColor * lambert;
 
   vec3 reflection = normalize(reflect(-lightDirection, worldNormal));
-  vec3 viewDirection = normalize(-vertPos);
+  vec3 viewDirection = normalize(viewVec);
   vec3 specular = Ks * specularColor * pow(max(0.0, dot(reflection, viewDirection)), shininessVal);
 
   gl_FragColor = vec4(Ka * ambientColor + diffuse + specular, 1.0);

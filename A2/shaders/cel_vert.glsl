@@ -17,4 +17,5 @@ void main() {
 
   vertPos = vec3(vertPos4) / vertPos4.w;
   normalInterp = vec3(normalMat * vec4(normal, 0.0));
+  viewVec = vec3(eyePos - vertPos);
 }
