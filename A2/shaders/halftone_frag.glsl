@@ -23,16 +23,17 @@ uniform vec3 lightPos; // Light position in camera space
 void main() {
   // Your solution should go here.
   // Only the background color calculations have been provided as an example.
-  //gl_FragColor = vec4(diffuseColor, 1.0);
 
+  // adustable diffuse
   vec3 lightDirection = normalize(lightPos - vertPos);
   vec3 worldNormal = normalize(normalInterp);
   float lambert = max(0.0, dot(lightDirection, worldNormal));
   vec3 diffuse = Kd * diffuseColor * lambert;
 
+  // adjustable ambient
   vec3 ambient = Ka * ambientColor;
 
-  float frequency = 50.0; // number of dots
+  float frequency = 50.0; // number of dots across model
   vec2 nearest = 2.0 * fract(frequency * vec2(vertPos.x, vertPos.y)) - 1.0;
   float dist = length(nearest);
   float radius = (1.0 - lambert) * 2.0; // size of dots, by basing it off our lambert, we can get a varied size based on where light hits our model

@@ -18,4 +18,5 @@ void main()
 
   vertPos = vec3(vertPos4) / vertPos4.w;
   normalInterp = vec3(normalMat * vec4(normal, 0.0));
+  // no specular, so we don't have to worry about viewVec
 }

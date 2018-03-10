@@ -20,14 +20,13 @@ uniform vec3 lightPos; // Light position in camera space
 
 void main() {
   // Your solution should go here.
-  
   // The model is currently rendered in black
-  //gl_FragColor = vec4(vec3(0.0), 1.0);
 
   // Calculate opacity
   float opacity = abs(dot(normalize(normalInterp), normalize(vertPos)));
-  opacity = 1.0 - opacity; 
+  opacity = 1.0 - opacity; // invert
 
+  // only need to use diffuse this time
   vec3 diffuse = Kd * diffuseColor;
 
   gl_FragColor = vec4(diffuse * opacity, 1.0);

@@ -17,5 +17,6 @@ void main() {
   vec4 vertPos4 = modelview * vec4(position, 1.0);
   gl_Position = projection * vertPos4;
 
+  // pass texture coordinates
   texCoordInterp = texCoord;
 }

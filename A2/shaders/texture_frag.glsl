@@ -25,7 +25,8 @@ uniform sampler2D uSampler;	// A GLSL sampler represents a single texture. A sam
 void main() {
   // Your solution should go here.
   // The model is currently rendered in black
-  //gl_FragColor = vec4(vec3(0.0), 1.0);
-  highp vec2 flippedTexCoordInterp = vec2(texCoordInterp.s, 1.0 -texCoordInterp.t);
+
+  // texture seemed to be upside down, so we flip it
+  highp vec2 flippedTexCoordInterp = vec2(texCoordInterp.s, 1.0 - texCoordInterp.t);
   gl_FragColor = vec4(texture2D(uSampler, flippedTexCoordInterp).rgb, 1.0);
 }
