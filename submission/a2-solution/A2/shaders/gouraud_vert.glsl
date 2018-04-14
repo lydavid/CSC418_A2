@@ -32,14 +32,8 @@ void main(){
 
   vec3 ambient = Ka * ambientColor; // adjustable ambient
 
-  /* TA: Also, you're adding lightPos and worldPosition, which are vectors in different coordinate systems. */
-  //vec3 lightDirection = normalize(lightPos - worldPosition); // direction light coming from
-  vec3 lightDirection = normalize(lightPos - vec3(vertPos4));
-
-  /* TA: Gourard: Computation for the view-space normal (what you call worldNormal) is incorrect. */
-  //vec3 worldNormal = normalize(mat3(normalMat) * normal); // normal vector in the world
-  vec3 worldNormal = normal;//normalize(vec3(vec4(normal, 0.0) * vertPos4));
-
+  vec3 lightDirection = normalize(lightPos - worldPosition); // direction light coming from
+  vec3 worldNormal = normalize(mat3(normalMat) * normal); // normal vector in the world
   float lambert = max(0.0, dot(lightDirection, worldNormal)); // make sure lambertian not negative
   vec3 diffuse = Kd * diffuseColor * lambert; // adjustable diffuse
 
